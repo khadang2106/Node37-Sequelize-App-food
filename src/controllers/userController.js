@@ -1,12 +1,15 @@
 import initModels from '../models/init-models.js';
 import sequelize from '../models/connect.js';
 import { responseData } from '../config/response.js';
+import { decodeToken } from '../config/jwt.js';
 
 let model = initModels(sequelize);
 
 export const getUserLike = async (req, res) => {
   try {
-    const { user_id } = req.params;
+    const { token } = req.headers;
+    const dToken = decodeToken(token);
+    const { user_id } = dToken.data;
 
     const data = await model.like_res.findAll({
       where: {
@@ -36,7 +39,9 @@ export const getUserLike = async (req, res) => {
 
 export const getUserRate = async (req, res) => {
   try {
-    const { user_id } = req.params;
+    const { token } = req.headers;
+    const dToken = decodeToken(token);
+    const { user_id } = dToken.data;
 
     const data = await model.rate_res.findAll({
       where: {

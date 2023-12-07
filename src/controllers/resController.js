@@ -3,6 +3,7 @@ import sequelize from '../models/connect.js';
 import { responseData } from '../config/response.js';
 import moment from 'moment/moment.js';
 import { generateArrSubId } from '../config/common.js';
+import { decodeToken } from '../config/jwt.js';
 
 let model = initModels(sequelize);
 
@@ -32,31 +33,43 @@ export const getResLike = async (req, res) => {
 
 export const likeRes = async (req, res) => {
   try {
-    const { user_id, res_id } = req.body;
+    const { token } = req.headers;
+    const dToken = decodeToken(token);
+    const { user_id } = dToken.data;
 
-    const isExist = await model.like_res.findOne({
-      where: {
-        user_id,
-        res_id,
-      },
+    const { res_id } = req.body;
+
+    const checkRes = await model.restaurant.findOne({
+      where: { res_id },
     });
 
-    if (isExist) {
-      await isExist.destroy();
+    if (checkRes) {
+      const isExist = await model.like_res.findOne({
+        where: {
+          user_id,
+          res_id,
+        },
+      });
 
-      responseData(res, 'Unlike Successfully', '', 200);
+      if (isExist) {
+        await isExist.destroy();
+
+        responseData(res, 'Unlike Successfully', '', 200);
+      } else {
+        const formattedDate = moment().format('YYYY-MM-DD HH:mm:ss');
+
+        const newData = {
+          user_id,
+          res_id,
+          date_like: formattedDate,
+        };
+
+        await model.like_res.create(newData);
+
+        responseData(res, 'Like Successfully', '', 200);
+      }
     } else {
-      const formattedDate = moment().format('YYYY-MM-DD HH:mm:ss');
-
-      const newData = {
-        user_id,
-        res_id,
-        date_like: formattedDate,
-      };
-
-      await model.like_res.create(newData);
-
-      responseData(res, 'Like Successfully', '', 200);
+      responseData(res, 'Restaurant not existed', '', 500);
     }
   } catch {
     responseData(res, 'Lỗi server...', '', 500);
@@ -89,20 +102,32 @@ export const getResRate = async (req, res) => {
 
 export const rateRes = async (req, res) => {
   try {
-    const { user_id, res_id, amount } = req.body;
+    const { token } = req.headers;
+    const dToken = decodeToken(token);
+    const { user_id } = dToken.data;
+
+    const { res_id, amount } = req.body;
 
     const formattedDate = moment().format('YYYY-MM-DD HH:mm:ss');
 
-    const newData = {
-      user_id,
-      res_id,
-      amount,
-      date_rate: formattedDate,
-    };
+    const checkRes = await model.restaurant.findOne({
+      where: { res_id },
+    });
 
-    await model.rate_res.create(newData);
+    if (checkRes) {
+      const newData = {
+        user_id,
+        res_id,
+        amount,
+        date_rate: formattedDate,
+      };
 
-    responseData(res, 'Rate Successfully', newData, 200);
+      await model.rate_res.create(newData);
+
+      responseData(res, 'Rate Successfully', newData, 200);
+    } else {
+      responseData(res, 'Restaurant not existed', '', 500);
+    }
   } catch {
     responseData(res, 'Lỗi server...', '', 500);
   }
@@ -110,37 +135,49 @@ export const rateRes = async (req, res) => {
 
 export const makeOrder = async (req, res) => {
   try {
-    const { user_id, food_id, amount } = req.body;
+    const { token } = req.headers;
+    const dToken = decodeToken(token);
+    const { user_id } = dToken.data;
+
+    const { food_id, amount } = req.body;
 
     const arr_sub_id = generateArrSubId();
 
-    const newData = {
-      user_id,
-      food_id,
-      amount,
-      code: req.body.code ? req.body.code : null,
-      arr_sub_id,
-    };
-
-    await model.orders.create(newData);
-
-    const orderDetail = await model.orders.findOne({
-      where: { user_id, food_id },
-      include: [
-        {
-          model: model.users,
-          as: 'user',
-          attributes: ['user_id', 'full_name'],
-        },
-        {
-          model: model.food,
-          as: 'food',
-          attributes: ['food_id', 'food_name', 'image'],
-        },
-      ],
+    const checkFood = await model.food.findOne({
+      where: { food_id },
     });
 
-    responseData(res, 'Order Successfully', orderDetail, 200);
+    if (checkFood) {
+      const newData = {
+        user_id,
+        food_id,
+        amount,
+        code: req.body.code ? req.body.code : null,
+        arr_sub_id,
+      };
+
+      await model.orders.create(newData);
+
+      const orderDetail = await model.orders.findOne({
+        where: { user_id, food_id },
+        include: [
+          {
+            model: model.users,
+            as: 'user',
+            attributes: ['user_id', 'full_name'],
+          },
+          {
+            model: model.food,
+            as: 'food',
+            attributes: ['food_id', 'food_name', 'image'],
+          },
+        ],
+      });
+
+      responseData(res, 'Order Successfully', orderDetail, 200);
+    } else {
+      responseData(res, 'Food not existed', '', 500);
+    }
   } catch {
     responseData(res, 'Lỗi server...', '', 500);
   }
