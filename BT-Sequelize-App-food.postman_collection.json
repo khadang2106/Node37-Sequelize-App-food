@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "91cf5113-79ad-482a-8930-207825db68af",
+		"name": "BT-Sequelize-App-food",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28548055"
+	},
+	"item": [
+		{
+			"name": "Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjExfSwiaWF0IjoxNzAxOTY4NDY3LCJleHAiOjE3MDI1NzMyNjd9.01femqNoDR568qHad-igiNr2dYzgEVJZ4C3g0tUK490",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"food_id\": 11,\r\n  \"amount\":5,\r\n  \"code\":\"TESTTTT\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/res/order",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"res",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Like/Unlike",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjExfSwiaWF0IjoxNzAxOTY4NDY3LCJleHAiOjE3MDI1NzMyNjd9.01femqNoDR568qHad-igiNr2dYzgEVJZ4C3g0tUK490",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"res_id\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/res/like",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"res",
+						"like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjExfSwiaWF0IjoxNzAxOTY4NDY3LCJleHAiOjE3MDI1NzMyNjd9.01femqNoDR568qHad-igiNr2dYzgEVJZ4C3g0tUK490",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"res_id\": 4,\r\n  \"amount\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/res/rate-res",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"res",
+						"rate-res"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Rate List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjExfSwiaWF0IjoxNzAxOTY4NDY3LCJleHAiOjE3MDI1NzMyNjd9.01femqNoDR568qHad-igiNr2dYzgEVJZ4C3g0tUK490",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{domain}}/user/get-user-rate",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"user",
+						"get-user-rate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Res Rate List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/res/get-res-rate/3",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"res",
+						"get-res-rate",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Like List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjExfSwiaWF0IjoxNzAxOTY4NDY3LCJleHAiOjE3MDI1NzMyNjd9.01femqNoDR568qHad-igiNr2dYzgEVJZ4C3g0tUK490",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{domain}}/user/get-user-like",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"user",
+						"get-user-like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Res Like List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/res/get-res-like/4",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"res",
+						"get-res-like",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"full_name\":\"Tester\",\r\n    \"email\":\"test01@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/auth/register",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"test01@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/auth/login",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
